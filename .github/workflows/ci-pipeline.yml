@@ -3,6 +3,9 @@ name: CI-CD Live Deployment
 on:
   push:
     branches: [ "main" ]
+  # ⏰ ADD THIS EXACTLY HERE:
+  schedule:
+    - cron: '0 0 * * *'
 
 permissions:
   contents: read
