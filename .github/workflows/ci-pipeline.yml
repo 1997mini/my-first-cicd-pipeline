@@ -1,13 +1,18 @@
-name: Automated Testing CI
+name: CI/CD Live Deployment
 
 on:
   push:
     branches: [ "main" ]
 
-jobs:
-  run-tests:
-    runs-on: ubuntu-latest
+# Gives the runner permission to deploy websites to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
     steps:
     - name: Pull Code From GitHub
       uses: actions/checkout@v4
@@ -17,5 +22,15 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Execute Automated Script Test
+    # Runs the tests and creates the index.html file
+    - name: Execute Tests and Build Page
       run: python app.py
+
+    # --- CONTINUOUS DEPLOYMENT (CD) STAGES ---
+    - name: Upload Webpage Artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: '.' # Uploads everything in the root folder
+
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
