@@ -24,6 +24,15 @@ jobs:
     - name: Execute Tests and Build Page
       run: python app.py
 
+    # --- SIMULATED SECURE ENVIRONMENT STEP ---
+    - name: Connect to Production Environment
+      env:
+        # This safely pulls the encrypted password from your repository settings
+        SUPER_SECRET_KEY: ${{ secrets.PRODUCTION_API_KEY }}
+      run: |
+        echo "Attempting secure cloud handshake..."
+        echo "Using API key: $SUPER_SECRET_KEY"
+
     - name: Upload Webpage Artifact
       uses: actions/upload-pages-artifact@v3
       with:
