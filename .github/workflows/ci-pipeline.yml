@@ -1,17 +1,16 @@
-name: CI/CD Live Deployment
+name: CI-CD Live Deployment
 
 on:
   push:
     branches: [ "main" ]
 
-# Gives the runner permission to deploy websites to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
 jobs:
-  build-and-test:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Pull Code From GitHub
@@ -22,15 +21,13 @@ jobs:
       with:
         python-version: '3.10'
 
-    # Runs the tests and creates the index.html file
     - name: Execute Tests and Build Page
       run: python app.py
 
-    # --- CONTINUOUS DEPLOYMENT (CD) STAGES ---
     - name: Upload Webpage Artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: '.' # Uploads everything in the root folder
+        path: '.'
 
     - name: Deploy to GitHub Pages
       uses: actions/deploy-pages@v4
