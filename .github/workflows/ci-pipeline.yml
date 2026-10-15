@@ -16,22 +16,21 @@ jobs:
     - name: Pull Code From GitHub
       uses: actions/checkout@v4
 
+    # --- DOCKER CONTAINER BUILD STEP ---
+    - name: Build Docker Container Image
+      run: |
+        echo "Starting Docker build process..."
+        docker build -t my-app-image:latest .
+        echo "Docker image built successfully!"
+
     - name: Set Up Python 3.10
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
+    # (Your remaining pipeline steps continue below automatically)
     - name: Execute Tests and Build Page
       run: python app.py
-
-    # --- SIMULATED SECURE ENVIRONMENT STEP ---
-    - name: Connect to Production Environment
-      env:
-        # This safely pulls the encrypted password from your repository settings
-        SUPER_SECRET_KEY: ${{ secrets.PRODUCTION_API_KEY }}
-      run: |
-        echo "Attempting secure cloud handshake..."
-        echo "Using API key: $SUPER_SECRET_KEY"
 
     - name: Upload Webpage Artifact
       uses: actions/upload-pages-artifact@v3
